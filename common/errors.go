@@ -3,6 +3,7 @@ package common
 import (
 	errs "errors"
 	"fmt"
+	"log"
 	"log/slog"
 	"os"
 )
@@ -27,7 +28,7 @@ var (
 	FailedToParseTargetURIErr       = errs.New("failed to parse the target URI")
 	FailedToCreateInstanceErr       = errs.New("failed to create instance")
 	FailedToStartHTTPServerErr      = errs.New("failed to start HTTP server")
-	UnrecognizedLogLevelErr         = errs.New("unrecognized log level")
+	FailedToRecognizeLogLevelErr    = errs.New("failed to recognize log level")
 )
 
 func LogFailedToCloseError(err error, l *slog.Logger) {
@@ -90,8 +91,8 @@ func LogAndGetFailedToParseTargetURIError(err error, l *slog.Logger) error {
 	return LogAndGetWrappedError(FailedToParseTargetURIErr, err, l)
 }
 
-func GetUnrecognizedLogLevelErrorWithMessage(message string) error {
-	return GetWrappedError(UnrecognizedLogLevelErr, errs.New(message))
+func LogFatalFailedToRecognizeLogLevelErrorWithMessage(message string) {
+	log.Fatalf(GetWrappedError(FailedToRecognizeLogLevelErr, errs.New(message)).Error())
 }
 
 func LogFatalFailedToStartHTTPServerError(err error, l *slog.Logger) {

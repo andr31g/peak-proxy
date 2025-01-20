@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"compress/gzip"
 	"io"
-	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -24,7 +23,7 @@ func ConfigureLogger(logLevel string) (*slog.Logger, *slog.LevelVar) {
 	case strings.ToLower(slog.LevelError.String()):
 		level.Set(slog.LevelError)
 	default:
-		log.Fatalf("invalid log level: %s", common.GetUnrecognizedLogLevelErrorWithMessage(logLevel))
+		common.LogFatalFailedToRecognizeLogLevelErrorWithMessage(logLevel)
 	}
 	l := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 		Level: level,
